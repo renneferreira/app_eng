@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
+import { TouchableOpacity, View, Text, StyleSheet, Linking } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { StatusBar } from 'expo-status-bar';
@@ -32,6 +32,10 @@ function MainNavigator() {
     else setThemeMode('dark');
   };
 
+  const abrirInstagramDev = () => {
+    Linking.openURL('https://instagram.com/oxe.renne').catch(() => { });
+  };
+
   return (
     <NavigationContainer>
       <StatusBar style={themeMode === 'light' ? 'dark' : 'light'} />
@@ -45,25 +49,54 @@ function MainNavigator() {
           headerTintColor: '#ffffff',
           headerTitleStyle: {
             fontWeight: '800',
-            fontSize: fs(17),
+            fontSize: fs(16),
+            letterSpacing: 0.2,
           },
           headerRight: () => (
             <View style={styles.headerActions}>
               <TouchableOpacity
-                style={[styles.a11yButton, { borderColor: palette.primary }]}
+                style={[
+                  styles.devHeaderPill,
+                  {
+                    backgroundColor: 'rgba(0, 255, 204, 0.10)',
+                    borderColor: 'rgba(0, 255, 204, 0.32)',
+                  },
+                ]}
+                onPress={abrirInstagramDev}
+                accessibilityLabel="Desenvolvedor Rennê Santos no Instagram @oxe.renne"
+                activeOpacity={0.8}
+              >
+                <Ionicons name="logo-instagram" size={13} color="#00ffcc" />
+                <Text style={styles.devHeaderText}>@oxe.renne</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[
+                  styles.a11yButton,
+                  {
+                    backgroundColor: 'rgba(15, 31, 52, 0.85)',
+                    borderColor: 'rgba(0, 255, 204, 0.35)',
+                  },
+                ]}
                 onPress={ciclarFonte}
                 accessibilityLabel="Alternar tamanho da fonte"
               >
-                <Text style={[styles.a11yBtnText, { color: palette.primary }]}>
-                  A+
-                </Text>
+                <Ionicons name="text-outline" size={13} color="#00ffcc" />
+                <Text style={styles.a11yBtnText}>+</Text>
               </TouchableOpacity>
+
               <TouchableOpacity
-                style={[styles.a11yButton, { borderColor: palette.primary }]}
+                style={[
+                  styles.a11yButton,
+                  {
+                    backgroundColor: 'rgba(15, 31, 52, 0.85)',
+                    borderColor: 'rgba(0, 255, 204, 0.35)',
+                  },
+                ]}
                 onPress={ciclarContraste}
                 accessibilityLabel="Alternar alto contraste e tema"
               >
-                <Ionicons name="contrast" size={16} color={palette.primary} />
+                <Ionicons name="contrast-outline" size={15} color="#00ffcc" />
               </TouchableOpacity>
             </View>
           ),
@@ -71,7 +104,7 @@ function MainNavigator() {
             backgroundColor: palette.headerBg,
             paddingBottom: 6,
             paddingTop: 6,
-            height: 64,
+            height: 66,
             borderTopColor: palette.border,
           },
           tabBarActiveTintColor: '#00ffcc',
@@ -80,15 +113,28 @@ function MainNavigator() {
             fontSize: 11,
             fontWeight: '700',
           },
-          tabBarIcon: ({ focused, color, size }) => {
-            let iconName = 'ellipse';
+          tabBarIcon: ({ focused, color }) => {
+            let iconName = 'ellipse-outline';
             if (route.name === 'Início') iconName = focused ? 'home' : 'home-outline';
             else if (route.name === 'Programação') iconName = focused ? 'calendar' : 'calendar-outline';
             else if (route.name === 'Palestrantes') iconName = focused ? 'people' : 'people-outline';
-            else if (route.name === 'Minicursos') iconName = focused ? 'book' : 'book-outline';
+            else if (route.name === 'Minicursos') iconName = focused ? 'layers' : 'layers-outline';
             else if (route.name === 'Olimpíadas') iconName = focused ? 'trophy' : 'trophy-outline';
-            else if (route.name === 'Mais') iconName = focused ? 'menu' : 'menu-outline';
-            return <Ionicons name={iconName} size={size} color={color} />;
+            else if (route.name === 'Mais') iconName = focused ? 'grid' : 'grid-outline';
+
+            return (
+              <View
+                style={[
+                  styles.tabIconGlass,
+                  focused && {
+                    backgroundColor: 'rgba(0, 255, 204, 0.14)',
+                    borderColor: 'rgba(0, 255, 204, 0.36)',
+                  },
+                ]}
+              >
+                <Ionicons name={iconName} size={19} color={color} />
+              </View>
+            );
           },
         })}
       >
@@ -141,18 +187,44 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginRight: 12,
   },
-  a11yButton: {
+  devHeaderPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
     borderWidth: 1,
-    borderRadius: 8,
+    borderRadius: 10,
     paddingHorizontal: 8,
-    paddingVertical: 4,
-    marginLeft: 8,
+    paddingVertical: 5,
+    marginRight: 2,
+  },
+  devHeaderText: {
+    color: '#ffffff',
+    fontWeight: '800',
+    fontSize: 11,
+    marginLeft: 5,
+  },
+  a11yButton: {
+    flexDirection: 'row',
+    borderWidth: 1,
+    borderRadius: 9,
+    paddingHorizontal: 8,
+    paddingVertical: 5,
+    marginLeft: 6,
     alignItems: 'center',
     justifyContent: 'center',
   },
   a11yBtnText: {
+    color: '#00ffcc',
     fontWeight: '900',
-    fontSize: 12,
+    fontSize: 11,
+    marginLeft: 1,
+  },
+  tabIconGlass: {
+    width: 38,
+    height: 28,
+    borderRadius: 9,
+    borderWidth: 1,
+    borderColor: 'transparent',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
-

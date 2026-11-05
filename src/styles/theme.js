@@ -1,15 +1,20 @@
-// Sistema de Temas, Cores, Tipografia e Acessibilidade
+// Sistema de Temas, Cores, Tipografia, Dark Glass e Acessibilidade
 // Semana de Engenharia Civil - IFPI Campus Floriano
+// Desenvolvido por Rennê Santos (@oxe.renne)
 
 export const PALETTES = {
   dark: {
     id: 'dark',
-    name: 'Azul Corporativo (Padrão)',
-    background: '#0d1b2a',
-    surface: '#16263b',
-    surfaceElevated: '#1e293b',
-    headerBg: '#002244',
-    bannerBg: '#003366',
+    name: 'Azul Corporativo • Dark Glass',
+    background: '#08111c',
+    surface: '#0e1d30',
+    surfaceElevated: '#13263e',
+    glassCard: 'rgba(15, 31, 52, 0.78)',
+    glassSurface: 'rgba(10, 22, 38, 0.72)',
+    glassBorder: 'rgba(0, 255, 204, 0.24)',
+    glassHighlight: 'rgba(255, 255, 255, 0.12)',
+    headerBg: '#06101c',
+    bannerBg: '#0b223d',
     primary: '#00ffcc',
     primaryMuted: 'rgba(0, 255, 204, 0.14)',
     secondary: '#38bdf8',
@@ -31,7 +36,11 @@ export const PALETTES = {
     name: 'Alto Contraste (Acessível)',
     background: '#000000',
     surface: '#0a0a0a',
-    surfaceElevated: '#141414',
+    surfaceElevated: '#121212',
+    glassCard: 'rgba(16, 16, 16, 0.94)',
+    glassSurface: 'rgba(8, 8, 8, 0.92)',
+    glassBorder: '#00ffcc',
+    glassHighlight: 'rgba(0, 255, 204, 0.28)',
     headerBg: '#000000',
     bannerBg: '#001a33',
     primary: '#00ffcc',
@@ -56,6 +65,10 @@ export const PALETTES = {
     background: '#f1f5f9',
     surface: '#ffffff',
     surfaceElevated: '#f8fafc',
+    glassCard: 'rgba(255, 255, 255, 0.92)',
+    glassSurface: 'rgba(241, 245, 249, 0.90)',
+    glassBorder: 'rgba(0, 102, 68, 0.28)',
+    glassHighlight: 'rgba(255, 255, 255, 0.80)',
     headerBg: '#002244',
     bannerBg: '#003366',
     primary: '#006644',
@@ -87,4 +100,3 @@ export const TYPOGRAPHY = {
   fontFamilyBody: 'System',
   scaleSize: (baseSize, multiplier = 1) => Math.round(baseSize * multiplier),
 };
-

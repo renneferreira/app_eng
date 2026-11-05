@@ -10,14 +10,13 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { useApp } from '../context/AppContext';
 import { OLIMPIADAS_DADOS } from '../data/mockData';
+import { DarkGlassIcon, DarkGlassPill } from '../components/DarkGlassIcon';
 
 export default function OlimpiadasScreen() {
   const { palette, fs, equipesOlimpiadas, inscreverEquipeOlimpiada } = useApp();
 
-  // Controla qual seção interativa está expandida ('modalidades' | 'regulamento' | 'inscricoes' | 'resultados')
   const [secaoAtiva, setSecaoAtiva] = useState('modalidades');
 
-  // Estado do formulário de inscrição de equipe
   const [nomeEquipe, setNomeEquipe] = useState('');
   const [modalidadeEscolhida, setModalidadeEscolhida] = useState('Estruturas (Ponte Treliçada)');
   const [integrantes, setIntegrantes] = useState('');
@@ -25,12 +24,11 @@ export default function OlimpiadasScreen() {
   const [cargaEstimada, setCargaEstimada] = useState('50');
   const [mensagemSucesso, setMensagemSucesso] = useState('');
 
-  // Estado do Simulador de Eficiência Estrutural (Seção 7 do Guia .md)
   const [simMassaG, setSimMassaG] = useState('520');
   const [simCargaKgf, setSimCargaKgf] = useState('54');
 
   const calcularEficiencia = () => {
-    const mKg = ( parseFloat(simMassaG) || 500 ) / 1000;
+    const mKg = (parseFloat(simMassaG) || 500) / 1000;
     const cKgf = parseFloat(simCargaKgf) || 0;
     if (mKg <= 0) return { ee: 0, penalidade: false };
     const eeBruta = cKgf / mKg;
@@ -68,14 +66,34 @@ export default function OlimpiadasScreen() {
       contentContainerStyle={styles.contentContainer}
       showsVerticalScrollIndicator={false}
     >
-      {/* Hero Banner com Troféu (Fiel à Tela 5 do Infográfico) */}
-      <View style={[styles.heroCard, { backgroundColor: palette.bannerBg, borderColor: palette.border }]}>
+      {/* Hero Banner com Troféu em Estilo Apple Dark Glass */}
+      <View
+        style={[
+          styles.heroCard,
+          {
+            backgroundColor: palette.bannerBg,
+            borderColor: palette.glassBorder || palette.border,
+          },
+        ]}
+      >
+        <View style={styles.heroSpecularLine} />
         <View style={styles.heroRow}>
-          <View style={styles.trophyContainer}>
-            <Ionicons name="trophy" size={50} color="#fbbf24" />
-          </View>
+          <DarkGlassIcon
+            name="trophy-outline"
+            size={34}
+            boxSize={68}
+            borderRadius={18}
+            accentColor="#fbbf24"
+            glassBg="rgba(251, 191, 36, 0.14)"
+            borderColor="rgba(251, 191, 36, 0.42)"
+            style={{ marginRight: 16 }}
+          />
           <View style={styles.heroTextContent}>
-            <Text style={[styles.heroTitle, { fontSize: fs(18) }]}>
+            <View style={styles.heroTagRow}>
+              <Ionicons name="shield-checkmark-outline" size={12} color="#00ffcc" />
+              <Text style={styles.heroTagText}>OLIMPÍADA TÉCNICA IFPI</Text>
+            </View>
+            <Text style={[styles.heroTitle, { fontSize: fs(17) }]}>
               {OLIMPIADAS_DADOS.titulo}
             </Text>
             <Text style={[styles.heroSubtitle, { fontSize: fs(12) }]}>
@@ -85,22 +103,27 @@ export default function OlimpiadasScreen() {
         </View>
       </View>
 
-      {/* Os 4 Cards Principais da Tela 5 do Infográfico */}
       {/* 1. Modalidades */}
       <TouchableOpacity
         style={[
           styles.menuCard,
           {
-            backgroundColor: palette.surfaceElevated,
+            backgroundColor: palette.glassCard || palette.surfaceElevated,
             borderColor: secaoAtiva === 'modalidades' ? palette.primary : palette.border,
           },
         ]}
         onPress={() => setSecaoAtiva(secaoAtiva === 'modalidades' ? '' : 'modalidades')}
         activeOpacity={0.85}
       >
-        <View style={[styles.menuIconWrap, { backgroundColor: palette.primaryMuted }]}>
-          <Ionicons name="layers-outline" size={22} color={palette.primary} />
-        </View>
+        <DarkGlassIcon
+          name="layers-outline"
+          size={21}
+          boxSize={44}
+          borderRadius={13}
+          accentColor={palette.primary}
+          active={secaoAtiva === 'modalidades'}
+          style={{ marginRight: 14 }}
+        />
         <View style={styles.menuInfo}>
           <Text style={[styles.menuTitle, { color: palette.text, fontSize: fs(15) }]}>
             Modalidades
@@ -109,10 +132,13 @@ export default function OlimpiadasScreen() {
             Estruturas • Topografia • Orçamento
           </Text>
         </View>
-        <Ionicons
-          name={secaoAtiva === 'modalidades' ? 'chevron-down' : 'chevron-forward'}
-          size={20}
-          color={palette.textSecondary}
+        <DarkGlassIcon
+          name={secaoAtiva === 'modalidades' ? 'chevron-up-outline' : 'chevron-down-outline'}
+          size={16}
+          boxSize={32}
+          borderRadius={10}
+          accentColor={secaoAtiva === 'modalidades' ? palette.primary : palette.textSecondary}
+          borderColor="rgba(148, 163, 184, 0.25)"
         />
       </TouchableOpacity>
 
@@ -121,7 +147,13 @@ export default function OlimpiadasScreen() {
           {OLIMPIADAS_DADOS.modalidades.map((mod) => (
             <View key={mod.id} style={[styles.modItem, { borderBottomColor: palette.border }]}>
               <View style={styles.modHeader}>
-                <Ionicons name={mod.icone} size={18} color={palette.primary} />
+                <DarkGlassIcon
+                  name={mod.icone}
+                  size={17}
+                  boxSize={34}
+                  borderRadius={10}
+                  accentColor={palette.primary}
+                />
                 <Text style={[styles.modTitle, { color: palette.text, fontSize: fs(14) }]}>
                   {mod.nome}
                 </Text>
@@ -129,9 +161,17 @@ export default function OlimpiadasScreen() {
               <Text style={[styles.modDesc, { color: palette.textSecondary, fontSize: fs(13) }]}>
                 {mod.detalhes}
               </Text>
-              <Text style={[styles.modPrize, { color: palette.accentGold, fontSize: fs(12) }]}>
-                🏆 {mod.premio}
-              </Text>
+              <View style={styles.prizeBadgeRow}>
+                <DarkGlassPill
+                  icon="trophy-outline"
+                  label={mod.premio}
+                  accentColor={palette.accentGold}
+                  textColor={palette.accentGold}
+                  glassBg="rgba(234, 179, 8, 0.12)"
+                  borderColor="rgba(234, 179, 8, 0.35)"
+                  fontSize={fs(11)}
+                />
+              </View>
             </View>
           ))}
         </View>
@@ -142,16 +182,23 @@ export default function OlimpiadasScreen() {
         style={[
           styles.menuCard,
           {
-            backgroundColor: palette.surfaceElevated,
+            backgroundColor: palette.glassCard || palette.surfaceElevated,
             borderColor: secaoAtiva === 'regulamento' ? palette.primary : palette.border,
           },
         ]}
         onPress={() => setSecaoAtiva(secaoAtiva === 'regulamento' ? '' : 'regulamento')}
         activeOpacity={0.85}
       >
-        <View style={[styles.menuIconWrap, { backgroundColor: palette.primaryMuted }]}>
-          <Ionicons name="document-text-outline" size={22} color={palette.primary} />
-        </View>
+        <DarkGlassIcon
+          name="document-text-outline"
+          size={21}
+          boxSize={44}
+          borderRadius={13}
+          accentColor="#38bdf8"
+          borderColor="rgba(56, 189, 248, 0.35)"
+          active={secaoAtiva === 'regulamento'}
+          style={{ marginRight: 14 }}
+        />
         <View style={styles.menuInfo}>
           <Text style={[styles.menuTitle, { color: palette.text, fontSize: fs(15) }]}>
             Regulamento
@@ -160,24 +207,37 @@ export default function OlimpiadasScreen() {
             Regras e critérios de avaliação
           </Text>
         </View>
-        <Ionicons
-          name={secaoAtiva === 'regulamento' ? 'chevron-down' : 'chevron-forward'}
-          size={20}
-          color={palette.textSecondary}
+        <DarkGlassIcon
+          name={secaoAtiva === 'regulamento' ? 'chevron-up-outline' : 'chevron-down-outline'}
+          size={16}
+          boxSize={32}
+          borderRadius={10}
+          accentColor={secaoAtiva === 'regulamento' ? palette.primary : palette.textSecondary}
+          borderColor="rgba(148, 163, 184, 0.25)"
         />
       </TouchableOpacity>
 
       {secaoAtiva === 'regulamento' ? (
         <View style={[styles.expandedPanel, { backgroundColor: palette.surface, borderColor: palette.border }]}>
-          <Text style={[styles.panelSectionHeading, { color: palette.primary, fontSize: fs(12) }]}>
+          <Text style={[styles.panelSectionHeading, { color: palette.primary, fontSize: fs(11) }]}>
             CRITÉRIOS DE PONTUAÇÃO OFICIAIS
           </Text>
           {OLIMPIADAS_DADOS.regrasPontuacao.map((regra, idx) => (
             <View key={idx} style={[styles.ruleBox, { borderColor: palette.border }]}>
               <View style={styles.ruleTopRow}>
-                <Text style={[styles.ruleTitle, { color: palette.text, fontSize: fs(14) }]}>
-                  {regra.criterio}
-                </Text>
+                <View style={styles.ruleTitleWithIcon}>
+                  <DarkGlassIcon
+                    name={regra.icone || 'analytics-outline'}
+                    size={15}
+                    boxSize={30}
+                    borderRadius={9}
+                    accentColor={palette.primary}
+                    style={{ marginRight: 8 }}
+                  />
+                  <Text style={[styles.ruleTitle, { color: palette.text, fontSize: fs(14) }]}>
+                    {regra.criterio}
+                  </Text>
+                </View>
                 <View style={[styles.weightBadge, { backgroundColor: palette.primaryMuted }]}>
                   <Text style={[styles.weightText, { color: palette.primary, fontSize: fs(11) }]}>
                     Peso: {regra.peso}
@@ -193,11 +253,20 @@ export default function OlimpiadasScreen() {
             </View>
           ))}
 
-          {/* Simulador Interativo de Eficiência Estrutural */}
+          {/* Simulador Interativo de Eficiência Estrutural (Sem Emojis — Com DarkGlassIcon) */}
           <View style={[styles.calcCard, { backgroundColor: palette.surfaceElevated, borderColor: palette.primary }]}>
-            <Text style={[styles.calcTitle, { color: palette.primary, fontSize: fs(13) }]}>
-              ⚡ Simulador de Eficiência Estrutural (Ponte Treliçada)
-            </Text>
+            <View style={styles.calcHeaderRow}>
+              <DarkGlassIcon
+                name="speedometer-outline"
+                size={17}
+                boxSize={34}
+                borderRadius={10}
+                accentColor={palette.primary}
+              />
+              <Text style={[styles.calcTitle, { color: palette.primary, fontSize: fs(13) }]}>
+                Simulador de Eficiência Estrutural (Ponte Treliçada)
+              </Text>
+            </View>
             <View style={styles.calcInputsRow}>
               <View style={styles.calcField}>
                 <Text style={[styles.calcLabel, { color: palette.textSecondary, fontSize: fs(11) }]}>
@@ -222,32 +291,42 @@ export default function OlimpiadasScreen() {
                 />
               </View>
             </View>
-            <Text style={[styles.calcResultText, { color: palette.text, fontSize: fs(14) }]}>
-              Eficiência Calculada (EE):{' '}
-              <Text style={{ color: palette.primary, fontWeight: '900' }}>
-                {resultadoSimulacao.ee} kgf/kg
+            <View style={styles.calcResultRow}>
+              <Ionicons name="analytics-outline" size={16} color={palette.primary} />
+              <Text style={[styles.calcResultText, { color: palette.text, fontSize: fs(13) }]}>
+                Eficiência Calculada (EE):{' '}
+                <Text style={{ color: palette.primary, fontWeight: '900' }}>
+                  {resultadoSimulacao.ee} kgf/kg
+                </Text>
+                {resultadoSimulacao.penalidade ? ' (Redutor ativo > 750g)' : ''}
               </Text>
-              {resultadoSimulacao.penalidade ? ' (Com redutor por excesso > 750g)' : ''}
-            </Text>
+            </View>
           </View>
         </View>
       ) : null}
 
-      {/* 3. Inscrições (Com badge verde "Aberto" igual ao Infográfico) */}
+      {/* 3. Inscrições */}
       <TouchableOpacity
         style={[
           styles.menuCard,
           {
-            backgroundColor: palette.surfaceElevated,
+            backgroundColor: palette.glassCard || palette.surfaceElevated,
             borderColor: secaoAtiva === 'inscricoes' ? palette.primary : palette.border,
           },
         ]}
         onPress={() => setSecaoAtiva(secaoAtiva === 'inscricoes' ? '' : 'inscricoes')}
         activeOpacity={0.85}
       >
-        <View style={[styles.menuIconWrap, { backgroundColor: palette.primaryMuted }]}>
-          <Ionicons name="create-outline" size={22} color={palette.primary} />
-        </View>
+        <DarkGlassIcon
+          name="create-outline"
+          size={21}
+          boxSize={44}
+          borderRadius={13}
+          accentColor="#34d399"
+          borderColor="rgba(52, 211, 153, 0.35)"
+          active={secaoAtiva === 'inscricoes'}
+          style={{ marginRight: 14 }}
+        />
         <View style={styles.menuInfo}>
           <Text style={[styles.menuTitle, { color: palette.text, fontSize: fs(15) }]}>
             Inscrições
@@ -257,20 +336,24 @@ export default function OlimpiadasScreen() {
           </Text>
         </View>
         <View style={styles.openBadge}>
+          <Ionicons name="radio-button-on" size={10} color="#ffffff" style={{ marginRight: 4 }} />
           <Text style={[styles.openBadgeText, { fontSize: fs(11) }]}>
             {OLIMPIADAS_DADOS.statusInscricao}
           </Text>
         </View>
-        <Ionicons
-          name={secaoAtiva === 'inscricoes' ? 'chevron-down' : 'chevron-forward'}
-          size={20}
-          color={palette.textSecondary}
+        <DarkGlassIcon
+          name={secaoAtiva === 'inscricoes' ? 'chevron-up-outline' : 'chevron-down-outline'}
+          size={16}
+          boxSize={32}
+          borderRadius={10}
+          accentColor={secaoAtiva === 'inscricoes' ? palette.primary : palette.textSecondary}
+          borderColor="rgba(148, 163, 184, 0.25)"
         />
       </TouchableOpacity>
 
       {secaoAtiva === 'inscricoes' ? (
         <View style={[styles.expandedPanel, { backgroundColor: palette.surface, borderColor: palette.border }]}>
-          <Text style={[styles.panelSectionHeading, { color: palette.primary, fontSize: fs(12) }]}>
+          <Text style={[styles.panelSectionHeading, { color: palette.primary, fontSize: fs(11) }]}>
             CADASTRO DE EQUIPE — OLIMPÍADAS IFPI
           </Text>
 
@@ -296,10 +379,19 @@ export default function OlimpiadasScreen() {
                   key={m.id}
                   style={[
                     styles.modPill,
-                    { borderColor: sel ? palette.primary : palette.border, backgroundColor: sel ? palette.primaryMuted : palette.surfaceElevated },
+                    {
+                      borderColor: sel ? palette.primary : palette.border,
+                      backgroundColor: sel ? palette.primaryMuted : palette.surfaceElevated,
+                    },
                   ]}
                   onPress={() => setModalidadeEscolhida(m.nome)}
                 >
+                  <Ionicons
+                    name={m.icone}
+                    size={12}
+                    color={sel ? palette.primary : palette.textSecondary}
+                    style={{ marginRight: 5 }}
+                  />
                   <Text style={[styles.modPillText, { color: sel ? palette.primary : palette.textSecondary, fontSize: fs(11) }]}>
                     {m.nome}
                   </Text>
@@ -348,7 +440,7 @@ export default function OlimpiadasScreen() {
             style={[styles.submitTeamButton, { backgroundColor: palette.primary }]}
             onPress={handleInscreverEquipe}
           >
-            <Ionicons name="checkmark-circle" size={18} color="#0d1b2a" />
+            <Ionicons name="checkmark-done-circle-outline" size={18} color="#06101a" />
             <Text style={[styles.submitTeamBtnText, { fontSize: fs(14) }]}>
               Registrar Equipe na Competição
             </Text>
@@ -367,46 +459,60 @@ export default function OlimpiadasScreen() {
         style={[
           styles.menuCard,
           {
-            backgroundColor: palette.surfaceElevated,
+            backgroundColor: palette.glassCard || palette.surfaceElevated,
             borderColor: secaoAtiva === 'resultados' ? palette.primary : palette.border,
           },
         ]}
         onPress={() => setSecaoAtiva(secaoAtiva === 'resultados' ? '' : 'resultados')}
         activeOpacity={0.85}
       >
-        <View style={[styles.menuIconWrap, { backgroundColor: palette.primaryMuted }]}>
-          <Ionicons name="podium-outline" size={22} color={palette.primary} />
-        </View>
+        <DarkGlassIcon
+          name="podium-outline"
+          size={21}
+          boxSize={44}
+          borderRadius={13}
+          accentColor="#fbbf24"
+          borderColor="rgba(251, 191, 36, 0.35)"
+          active={secaoAtiva === 'resultados'}
+          style={{ marginRight: 14 }}
+        />
         <View style={styles.menuInfo}>
           <Text style={[styles.menuTitle, { color: palette.text, fontSize: fs(15) }]}>
             Resultados
           </Text>
           <Text style={[styles.menuSubtitle, { color: palette.textSecondary, fontSize: fs(12) }]}>
-            Em breve • {equipesOlimpiadas.length} equipes homologadas
+            Ranking oficial • {equipesOlimpiadas.length} equipes homologadas
           </Text>
         </View>
-        <Ionicons
-          name={secaoAtiva === 'resultados' ? 'chevron-down' : 'chevron-forward'}
-          size={20}
-          color={palette.textSecondary}
+        <DarkGlassIcon
+          name={secaoAtiva === 'resultados' ? 'chevron-up-outline' : 'chevron-down-outline'}
+          size={16}
+          boxSize={32}
+          borderRadius={10}
+          accentColor={secaoAtiva === 'resultados' ? palette.primary : palette.textSecondary}
+          borderColor="rgba(148, 163, 184, 0.25)"
         />
       </TouchableOpacity>
 
       {secaoAtiva === 'resultados' ? (
         <View style={[styles.expandedPanel, { backgroundColor: palette.surface, borderColor: palette.border }]}>
-          <Text style={[styles.panelSectionHeading, { color: palette.primary, fontSize: fs(12) }]}>
+          <Text style={[styles.panelSectionHeading, { color: palette.primary, fontSize: fs(11) }]}>
             QUADRO DE EQUIPES E CLASSIFICAÇÃO PRELIMINAR
           </Text>
           {equipesOlimpiadas.map((eq, index) => (
             <View key={eq.id} style={[styles.teamRow, { borderColor: palette.border }]}>
-              <View style={[styles.rankCircle, { backgroundColor: index === 0 ? '#eab308' : palette.primaryMuted }]}>
-                <Text style={[styles.rankText, { color: index === 0 ? '#0d1b2a' : palette.primary, fontSize: fs(13) }]}>
-                  {index + 1}º
-                </Text>
-              </View>
+              <DarkGlassIcon
+                name={index === 0 ? 'trophy' : 'medal-outline'}
+                size={16}
+                boxSize={36}
+                borderRadius={11}
+                accentColor={index === 0 ? '#fbbf24' : palette.primary}
+                borderColor={index === 0 ? 'rgba(251, 191, 36, 0.48)' : 'rgba(0, 255, 204, 0.28)'}
+                style={{ marginRight: 12 }}
+              />
               <View style={styles.teamInfo}>
                 <Text style={[styles.teamName, { color: palette.text, fontSize: fs(14) }]}>
-                  {eq.nomeEquipe}
+                  {index + 1}º • {eq.nomeEquipe}
                 </Text>
                 <Text style={[styles.teamMod, { color: palette.primary, fontSize: fs(11) }]}>
                   {eq.modalidade} • {eq.status}
@@ -440,52 +546,57 @@ const styles = StyleSheet.create({
     paddingBottom: 32,
   },
   heroCard: {
-    borderRadius: 16,
+    borderRadius: 18,
     padding: 20,
     marginBottom: 18,
     borderWidth: 1,
+    position: 'relative',
+    overflow: 'hidden',
+  },
+  heroSpecularLine: {
+    position: 'absolute',
+    top: 0,
+    left: 20,
+    right: 20,
+    height: 1,
+    backgroundColor: 'rgba(255, 255, 255, 0.22)',
   },
   heroRow: {
     flexDirection: 'row',
     alignItems: 'center',
   },
-  trophyContainer: {
-    width: 72,
-    height: 72,
-    borderRadius: 16,
-    backgroundColor: 'rgba(251, 191, 36, 0.14)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 16,
-  },
   heroTextContent: {
     flex: 1,
+  },
+  heroTagRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 4,
+  },
+  heroTagText: {
+    color: '#00ffcc',
+    fontSize: 10,
+    fontWeight: '800',
+    letterSpacing: 0.7,
+    marginLeft: 5,
   },
   heroTitle: {
     color: '#ffffff',
     fontWeight: '900',
-    lineHeight: 24,
+    lineHeight: 23,
   },
   heroSubtitle: {
     color: '#cbd5e1',
-    marginTop: 6,
+    marginTop: 5,
     fontWeight: '600',
   },
   menuCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 16,
-    borderRadius: 12,
+    padding: 15,
+    borderRadius: 16,
     marginBottom: 10,
     borderWidth: 1,
-  },
-  menuIconWrap: {
-    width: 42,
-    height: 42,
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 14,
   },
   menuInfo: {
     flex: 1,
@@ -498,10 +609,12 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   openBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: '#16a34a',
     paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 12,
+    paddingVertical: 5,
+    borderRadius: 10,
     marginRight: 10,
   },
   openBadgeText: {
@@ -510,7 +623,7 @@ const styles = StyleSheet.create({
   },
   expandedPanel: {
     padding: 16,
-    borderRadius: 12,
+    borderRadius: 16,
     borderWidth: 1,
     marginBottom: 14,
     marginTop: -4,
@@ -521,25 +634,26 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   modItem: {
-    paddingBottom: 12,
-    marginBottom: 12,
+    paddingBottom: 14,
+    marginBottom: 14,
     borderBottomWidth: 1,
   },
   modHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 4,
+    marginBottom: 6,
   },
   modTitle: {
     fontWeight: '800',
-    marginLeft: 8,
+    marginLeft: 10,
+    flex: 1,
   },
   modDesc: {
     lineHeight: 19,
-    marginBottom: 6,
+    marginBottom: 8,
   },
-  modPrize: {
-    fontWeight: '700',
+  prizeBadgeRow: {
+    flexDirection: 'row',
   },
   ruleBox: {
     paddingVertical: 10,
@@ -550,13 +664,19 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  ruleTitleWithIcon: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+    paddingRight: 8,
+  },
   ruleTitle: {
     fontWeight: '800',
     flex: 1,
   },
   weightBadge: {
     paddingHorizontal: 8,
-    paddingVertical: 3,
+    paddingVertical: 4,
     borderRadius: 8,
   },
   weightText: {
@@ -564,7 +684,7 @@ const styles = StyleSheet.create({
   },
   ruleFormula: {
     fontWeight: '700',
-    marginTop: 4,
+    marginTop: 6,
   },
   ruleDesc: {
     marginTop: 3,
@@ -573,12 +693,18 @@ const styles = StyleSheet.create({
   calcCard: {
     marginTop: 14,
     padding: 14,
-    borderRadius: 12,
+    borderRadius: 14,
     borderWidth: 1,
+  },
+  calcHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
   },
   calcTitle: {
     fontWeight: '800',
-    marginBottom: 10,
+    marginLeft: 10,
+    flex: 1,
   },
   calcInputsRow: {
     flexDirection: 'row',
@@ -593,14 +719,20 @@ const styles = StyleSheet.create({
   },
   calcInput: {
     borderWidth: 1,
-    borderRadius: 8,
+    borderRadius: 10,
     paddingHorizontal: 10,
     paddingVertical: 8,
     fontWeight: '700',
   },
+  calcResultRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 12,
+  },
   calcResultText: {
-    marginTop: 10,
+    marginLeft: 6,
     fontWeight: '700',
+    flex: 1,
   },
   inputLabel: {
     fontWeight: '700',
@@ -609,7 +741,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     borderWidth: 1,
-    borderRadius: 10,
+    borderRadius: 12,
     paddingHorizontal: 12,
     paddingVertical: 10,
     fontWeight: '600',
@@ -619,9 +751,11 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   modPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: 14,
+    paddingVertical: 7,
+    borderRadius: 12,
     borderWidth: 1,
     marginRight: 6,
     marginBottom: 6,
@@ -633,12 +767,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 12,
-    borderRadius: 10,
+    paddingVertical: 13,
+    borderRadius: 12,
     marginTop: 14,
   },
   submitTeamBtnText: {
-    color: '#0d1b2a',
+    color: '#06101a',
     fontWeight: '800',
     marginLeft: 8,
   },
@@ -652,17 +786,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 10,
     borderBottomWidth: 1,
-  },
-  rankCircle: {
-    width: 34,
-    height: 34,
-    borderRadius: 17,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 12,
-  },
-  rankText: {
-    fontWeight: '900',
   },
   teamInfo: {
     flex: 1,
@@ -688,4 +811,3 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
 });
-

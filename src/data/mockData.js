@@ -1,4 +1,5 @@
 // Dados Oficiais da Semana de Engenharia Civil - IFPI Campus Floriano (20 a 24 de Outubro)
+// Desenvolvido por Rennê Santos (@oxe.renne)
 
 export const EVENTO_INFO = {
   titulo: 'Semana de Engenharia Civil',
@@ -13,15 +14,21 @@ export const EVENTO_INFO = {
   emailContato: 'engcivil.floriano@ifpi.edu.br',
   telefoneContato: '(89) 3515-6400',
   instagram: '@engcivil.ifpifloriano',
+  desenvolvedor: {
+    nome: 'Rennê Santos',
+    instagram: '@oxe.renne',
+    instagramUrl: 'https://instagram.com/oxe.renne',
+    cargo: 'Engenharia de Software & Arquitetura Dark Glass PWA',
+  },
 };
 
 export const DIAS_EVENTO = [
-  { id: 'todos', data: 'Todos', diaSemana: '20 a 24/10' },
-  { id: '20/10', data: '20/10', diaSemana: 'Seg' },
-  { id: '21/10', data: '21/10', diaSemana: 'Ter' },
-  { id: '22/10', data: '22/10', diaSemana: 'Qua' },
-  { id: '23/10', data: '23/10', diaSemana: 'Qui' },
-  { id: '24/10', data: '24/10', diaSemana: 'Sex' },
+  { id: 'todos', data: 'Todos', diaSemana: '20 a 24/10', icone: 'apps-outline' },
+  { id: '20/10', data: '20/10', diaSemana: 'Seg', icone: 'calendar-outline' },
+  { id: '21/10', data: '21/10', diaSemana: 'Ter', icone: 'calendar-outline' },
+  { id: '22/10', data: '22/10', diaSemana: 'Qua', icone: 'calendar-outline' },
+  { id: '23/10', data: '23/10', diaSemana: 'Qui', icone: 'calendar-outline' },
+  { id: '24/10', data: '24/10', diaSemana: 'Sex', icone: 'calendar-outline' },
 ];
 
 export const PROGRAMACAO_INICIAL = [
@@ -30,6 +37,7 @@ export const PROGRAMACAO_INICIAL = [
     dia: '20/10',
     hora: '19:00',
     tipo: 'Palestra',
+    icone: 'mic-outline',
     destaque: true,
     subtituloDestaque: 'Palestra de Abertura',
     titulo: 'Desafios da Engenharia Civil no Brasil Contemporâneo',
@@ -43,6 +51,7 @@ export const PROGRAMACAO_INICIAL = [
     dia: '21/10',
     hora: '08:00',
     tipo: 'Minicurso',
+    icone: 'layers-outline',
     destaque: false,
     titulo: 'AutoCAD na Prática',
     palestrante: 'Eng. Mariana Silva',
@@ -55,6 +64,7 @@ export const PROGRAMACAO_INICIAL = [
     dia: '21/10',
     hora: '14:00',
     tipo: 'Palestra',
+    icone: 'leaf-outline',
     destaque: false,
     titulo: 'Sustentabilidade na Construção Civil',
     palestrante: 'Prof. José Almeida',
@@ -67,6 +77,7 @@ export const PROGRAMACAO_INICIAL = [
     dia: '22/10',
     hora: '08:00',
     tipo: 'Minicurso',
+    icone: 'compass-outline',
     destaque: false,
     titulo: 'Topografia com Drone',
     palestrante: 'Eng. Rafael Lima',
@@ -79,6 +90,7 @@ export const PROGRAMACAO_INICIAL = [
     dia: '22/10',
     hora: '14:00',
     tipo: 'Olimpíada',
+    icone: 'trophy-outline',
     destaque: true,
     subtituloDestaque: 'Olimpíada Oficial',
     titulo: 'Competição de Projetos Estruturais',
@@ -92,6 +104,7 @@ export const PROGRAMACAO_INICIAL = [
     dia: '22/10',
     hora: '19:00',
     tipo: 'Palestra',
+    icone: 'hardware-chip-outline',
     destaque: false,
     titulo: 'Tecnologia e Inovação na Engenharia',
     palestrante: 'Dra. Luciana Costa',
@@ -104,6 +117,7 @@ export const PROGRAMACAO_INICIAL = [
     dia: '23/10',
     hora: '14:00',
     tipo: 'Minicurso',
+    icone: 'cube-outline',
     destaque: false,
     titulo: 'Revit Aplicado à Construção Civil',
     palestrante: 'Prof. Lucas Ferreira',
@@ -116,6 +130,7 @@ export const PROGRAMACAO_INICIAL = [
     dia: '23/10',
     hora: '19:00',
     tipo: 'Atividade Cultural',
+    icone: 'musical-notes-outline',
     destaque: false,
     titulo: 'Show com Banda Local',
     palestrante: 'Confraternização e Integração Cultural',
@@ -128,6 +143,7 @@ export const PROGRAMACAO_INICIAL = [
     dia: '24/10',
     hora: '18:30',
     tipo: 'Minicurso',
+    icone: 'bar-chart-outline',
     destaque: false,
     titulo: 'Gestão de Obras e Projetos',
     palestrante: 'Prof. José Almeida',
@@ -140,6 +156,7 @@ export const PROGRAMACAO_INICIAL = [
     dia: '24/10',
     hora: '20:30',
     tipo: 'Olimpíada',
+    icone: 'ribbon-outline',
     destaque: false,
     titulo: 'Premiação das Olimpíadas e Encerramento Oficial',
     palestrante: 'Coordenação de Engenharia Civil IFPI Floriano',
@@ -156,6 +173,7 @@ export const PALESTRANTES_INICIAIS = [
     tema: 'Desafios da Engenharia Civil no Brasil Contemporâneo',
     papel: 'Palestra de Abertura',
     categoria: 'Palestras',
+    iconeEspecialidade: 'construct-outline',
     instituicao: 'Doutor em Estruturas e Construção Civil (UnB / IFPI)',
     horario: '20/10 às 19:00',
     local: 'Auditório Principal',
@@ -171,6 +189,7 @@ export const PALESTRANTES_INICIAIS = [
     tema: 'AutoCAD na Prática',
     papel: 'Minicurso',
     categoria: 'Minicursos',
+    iconeEspecialidade: 'layers-outline',
     instituicao: 'Especialista em Projetos Executivos e BIM Manager',
     horario: '21/10 às 08:00',
     local: 'Laboratório de Informática',
@@ -186,6 +205,7 @@ export const PALESTRANTES_INICIAIS = [
     tema: 'Sustentabilidade na Construção Civil',
     papel: 'Palestra',
     categoria: 'Palestras',
+    iconeEspecialidade: 'leaf-outline',
     instituicao: 'Mestre em Engenharia de Materiais e Gestão de Obras (IFPI)',
     horario: '21/10 às 14:00 • 24/10 às 18:30',
     local: 'Auditório Principal / Sala 202',
@@ -201,6 +221,7 @@ export const PALESTRANTES_INICIAIS = [
     tema: 'Tecnologia e Inovação na Engenharia',
     papel: 'Palestra',
     categoria: 'Palestras',
+    iconeEspecialidade: 'hardware-chip-outline',
     instituicao: 'Doutora em Engenharia Civil e Inovação Tecnológica',
     horario: '22/10 às 19:00',
     local: 'Auditório Principal',
@@ -216,6 +237,7 @@ export const PALESTRANTES_INICIAIS = [
     tema: 'Gestão de Obras e Projetos / Topografia com Drone',
     papel: 'Minicurso',
     categoria: 'Minicursos',
+    iconeEspecialidade: 'compass-outline',
     instituicao: 'Especialista em Geotecnologias e Aerofotogrametria',
     horario: '22/10 às 08:00',
     local: 'Campo Experimental',
@@ -231,6 +253,7 @@ export const PALESTRANTES_INICIAIS = [
     tema: 'Revit Aplicado à Construção Civil',
     papel: 'Minicurso',
     categoria: 'Minicursos',
+    iconeEspecialidade: 'cube-outline',
     instituicao: 'Especialista em Modelagem Paramétrica BIM (IFPI)',
     horario: '23/10 às 14:00',
     local: 'Laboratório de Informática',
@@ -253,8 +276,9 @@ export const MINICURSOS_INICIAIS = [
     horario: '21/10 • 08:00 às 12:00',
     vagasTotais: 25,
     vagasDisponiveis: 12,
-    statusTipo: 'disponivel', // 'disponivel' | 'poucas' | 'encerrado'
+    statusTipo: 'disponivel',
     icone: 'A',
+    iconeNome: 'layers-outline',
     corIcone: '#0284c7',
     materiais: ['Apostila de Comandos AutoCAD 2D (PDF)', 'Arquivo Base DWG - Projeto Residencial', 'Tabela de Penas CTB IFPI'],
     ementa:
@@ -272,6 +296,7 @@ export const MINICURSOS_INICIAIS = [
     vagasDisponiveis: 15,
     statusTipo: 'disponivel',
     icone: 'R',
+    iconeNome: 'cube-outline',
     corIcone: '#2563eb',
     materiais: ['Template BIM Arquitetônico IFPI (.rte)', 'Guia Rápido de Famílias e Tabelas (PDF)'],
     ementa:
@@ -289,6 +314,7 @@ export const MINICURSOS_INICIAIS = [
     vagasDisponiveis: 5,
     statusTipo: 'poucas',
     icone: 'T',
+    iconeNome: 'compass-outline',
     corIcone: '#16a34a',
     materiais: ['Checklist de Plano de Voo e Regulamentação ANAC/DECEA', 'Dataset de Imagens Georreferenciadas de Exemplo'],
     ementa:
@@ -306,7 +332,8 @@ export const MINICURSOS_INICIAIS = [
     vagasDisponiveis: 0,
     statusTipo: 'encerrado',
     icone: 'G',
-    corIcone: '#475569',
+    iconeNome: 'bar-chart-outline',
+    corIcone: '#38bdf8',
     materiais: ['Planilha Modelo de Cronograma Físico-Financeiro e Curva ABC (.xlsx)', 'Guia SINAPI / ORSE'],
     ementa:
       'Estrutura Analítica do Projeto (EAP), composições de custos unitários (SINAPI), cálculo de BDI, planejamento de suprimentos e acompanhamento de metas no canteiro.',
@@ -350,24 +377,28 @@ export const OLIMPIADAS_DADOS = {
   regrasPontuacao: [
     {
       criterio: 'Eficiência Estrutural (EE)',
+      icone: 'analytics-outline',
       peso: '60%',
       formula: 'EE = Carga Suportada (kgf) ÷ Massa da Estrutura (kg)',
       descricao: 'Mede o desempenho mecânico real até o colapso ou deflexão limite de 25 mm no centro do vão.',
     },
     {
       criterio: 'Acurácia do Memorial de Cálculo',
+      icone: 'calculator-outline',
       peso: '20%',
       formula: 'Nota = 100 × (1 - |Carga Prevista - Carga Real| ÷ Carga Real)',
       descricao: 'Avalia a proximidade entre a carga estimada no software (Ftool) pela equipe e a carga real medida no ensaio.',
     },
     {
       criterio: 'Estética, Acabamento e Geometria',
+      icone: 'shapes-outline',
       peso: '10%',
       formula: 'Avaliação da Banca Docente (0 a 100 pts)',
       descricao: 'Simetria das ligações, limpeza no uso de adesivo, respeito aos gabaritos dimensionais e criatividade estrutural.',
     },
     {
       criterio: 'Sustentabilidade e Economia de Material',
+      icone: 'leaf-outline',
       peso: '10%',
       formula: 'Bônus por estrutura abaixo de 500 g sem perda de rigidez',
       descricao: 'Premia soluções esbeltas e uso racional de insumos estruturais.',
@@ -419,6 +450,7 @@ export const MAPA_CAMPUS_ESPACOS = [
   {
     id: 'esp-1',
     nome: 'Auditório Principal',
+    icone: 'easel-outline',
     bloco: 'Bloco Administrativo / Central',
     atividades: 'Palestras Magnas, Cerimônia de Abertura e Premiação das Olimpíadas',
     capacidade: '250 lugares climatizados • Acessível para cadeirantes (rampa e espaços reservados)',
@@ -427,6 +459,7 @@ export const MAPA_CAMPUS_ESPACOS = [
   {
     id: 'esp-2',
     nome: 'Laboratório de Informática (CAD/BIM)',
+    icone: 'desktop-outline',
     bloco: 'Bloco de Engenharia Civil - 1º Andar',
     atividades: 'Minicursos de AutoCAD na Prática e Revit Aplicado à Construção Civil',
     capacidade: '25 bancadas com workstations dedicadas',
@@ -435,6 +468,7 @@ export const MAPA_CAMPUS_ESPACOS = [
   {
     id: 'esp-3',
     nome: 'Ginásio Poliesportivo',
+    icone: 'trophy-outline',
     bloco: 'Complexo Esportivo do Campus',
     atividades: 'Competição de Projetos Estruturais (Ensaio de Ruptura de Pontes)',
     capacidade: 'Arquibancada para 400 espectadores + Pórtico de Ensaio',
@@ -443,6 +477,7 @@ export const MAPA_CAMPUS_ESPACOS = [
   {
     id: 'esp-4',
     nome: 'Campo Experimental e Laboratório de Solos/Topografia',
+    icone: 'compass-outline',
     bloco: 'Área Externa Técnica - Engenharia Civil',
     atividades: 'Minicurso Topografia com Drone e Olimpíada de Topografia',
     capacidade: 'Área aberta demarcada para voos RPA e poligonais topográficas',
@@ -451,6 +486,7 @@ export const MAPA_CAMPUS_ESPACOS = [
   {
     id: 'esp-5',
     nome: 'Praça de Convivência',
+    icone: 'musical-notes-outline',
     bloco: 'Pátio Central Integrado',
     atividades: 'Show com Banda Local, Credenciamento, Coffee Break e Exposição Técnica',
     capacidade: 'Área livre coberta',
@@ -459,10 +495,10 @@ export const MAPA_CAMPUS_ESPACOS = [
   {
     id: 'esp-6',
     nome: 'Sala 202',
+    icone: 'school-outline',
     bloco: 'Bloco Didático II',
     atividades: 'Minicurso Gestão de Obras e Projetos e Prova de Orçamento Express',
     capacidade: '35 lugares com projetor multimídia',
     coordenadaRef: 'Bloco Didático II - Térreo, corredor principal',
   },
 ];
-

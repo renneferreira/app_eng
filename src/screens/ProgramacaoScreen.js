@@ -11,6 +11,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { useApp } from '../context/AppContext';
 import { DIAS_EVENTO } from '../data/mockData';
+import { DarkGlassIcon, DarkGlassPill } from '../components/DarkGlassIcon';
 
 export default function ProgramacaoScreen({ route }) {
   const { palette, fs, programacao, favoritos, toggleFavorito } = useApp();
@@ -38,6 +39,15 @@ export default function ProgramacaoScreen({ route }) {
     return palette.secondary;
   };
 
+  const obterIconeTipo = (item) => {
+    if (item.icone) return item.icone;
+    if (item.tipo === 'Palestra') return 'mic-outline';
+    if (item.tipo === 'Minicurso') return 'layers-outline';
+    if (item.tipo === 'Olimpíada') return 'trophy-outline';
+    if (item.tipo === 'Atividade Cultural') return 'musical-notes-outline';
+    return 'calendar-outline';
+  };
+
   const dadosFiltrados = programacao.filter((item) => {
     if (diaSelecionado !== 'todos' && item.dia !== diaSelecionado) return false;
     if (apenasFavoritos && !favoritos.includes(item.id)) return false;
@@ -47,7 +57,7 @@ export default function ProgramacaoScreen({ route }) {
 
   return (
     <View style={[styles.container, { backgroundColor: palette.background }]}>
-      {/* Filtro de Dias (Todos, 20/10, 21/10, 22/10, 23/10, 24/10) */}
+      {/* Filtro de Dias (Todos, 20/10, 21/10, 22/10, 23/10, 24/10) com Ícones Dark Glass */}
       <View style={styles.topFiltersContainer}>
         <ScrollView
           horizontal
@@ -61,20 +71,43 @@ export default function ProgramacaoScreen({ route }) {
                 key={dia.id}
                 style={[
                   styles.tabButton,
-                  { backgroundColor: palette.surfaceElevated, borderColor: palette.border },
-                  ativo && { backgroundColor: palette.primary, borderColor: palette.primary },
+                  {
+                    backgroundColor: palette.glassCard || palette.surfaceElevated,
+                    borderColor: palette.border,
+                  },
+                  ativo && {
+                    backgroundColor: palette.primary,
+                    borderColor: palette.primary,
+                  },
                 ]}
                 onPress={() => setDiaSelecionado(dia.id)}
+                activeOpacity={0.82}
               >
-                <Text
-                  style={[
-                    styles.tabText,
-                    { color: palette.text, fontSize: fs(13) },
-                    ativo && { color: '#0d1b2a' },
-                  ]}
-                >
-                  {dia.data}
-                </Text>
+                <Ionicons
+                  name={dia.icone || 'calendar-outline'}
+                  size={14}
+                  color={ativo ? '#06101a' : palette.primary}
+                  style={{ marginRight: 6 }}
+                />
+                <View>
+                  <Text
+                    style={[
+                      styles.tabText,
+                      { color: palette.text, fontSize: fs(12) },
+                      ativo && { color: '#06101a' },
+                    ]}
+                  >
+                    {dia.data}
+                  </Text>
+                  <Text
+                    style={[
+                      styles.tabSubText,
+                      { color: ativo ? '#0e293d' : palette.textSecondary, fontSize: fs(9) },
+                    ]}
+                  >
+                    {dia.diaSemana}
+                  </Text>
+                </View>
               </TouchableOpacity>
             );
           })}
@@ -93,9 +126,9 @@ export default function ProgramacaoScreen({ route }) {
             onPress={() => setApenasFavoritos(!apenasFavoritos)}
           >
             <Ionicons
-              name={apenasFavoritos ? 'star' : 'star-outline'}
-              size={15}
-              color={apenasFavoritos ? palette.accentGold : palette.textSecondary}
+              name={apenasFavoritos ? 'bookmark' : 'bookmark-outline'}
+              size={14}
+              color={apenasFavoritos ? palette.accentGold : palette.primary}
             />
             <Text
               style={[
@@ -106,7 +139,7 @@ export default function ProgramacaoScreen({ route }) {
                 },
               ]}
             >
-              Apenas Favoritos ({favoritos.length})
+              Agenda Salva ({favoritos.length})
             </Text>
           </TouchableOpacity>
 
@@ -118,15 +151,17 @@ export default function ProgramacaoScreen({ route }) {
               ]}
               onPress={() => setCategoriaFiltro(null)}
             >
+              <Ionicons name="funnel-outline" size={12} color="#ffffff" />
               <Text style={[styles.catClearText, { fontSize: fs(11) }]}>
-                {categoriaFiltro} ✕
+                {categoriaFiltro}
               </Text>
+              <Ionicons name="close-circle" size={14} color="#ffffff" />
             </TouchableOpacity>
           ) : null}
         </View>
       </View>
 
-      {/* Lista de Atividades (Fiel à Tela 2 do Infográfico) */}
+      {/* Lista de Atividades com Cards e Ícones Estilo Apple Dark Glass */}
       <FlatList
         data={dadosFiltrados}
         keyExtractor={(item) => item.id}
@@ -134,7 +169,13 @@ export default function ProgramacaoScreen({ route }) {
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
           <View style={[styles.emptyBox, { backgroundColor: palette.surface, borderColor: palette.border }]}>
-            <Ionicons name="calendar-clear-outline" size={32} color={palette.textSecondary} />
+            <DarkGlassIcon
+              name="calendar-clear-outline"
+              size={24}
+              boxSize={48}
+              borderRadius={14}
+              accentColor={palette.primary}
+            />
             <Text style={[styles.emptyText, { color: palette.textSecondary, fontSize: fs(14) }]}>
               Nenhuma atividade encontrada para o filtro selecionado.
             </Text>
@@ -148,24 +189,42 @@ export default function ProgramacaoScreen({ route }) {
             <TouchableOpacity
               style={[
                 styles.itemCard,
-                { backgroundColor: palette.surfaceElevated, borderColor: palette.border },
+                {
+                  backgroundColor: palette.glassCard || palette.surfaceElevated,
+                  borderColor: palette.border,
+                },
               ]}
               activeOpacity={0.85}
               onPress={() => setEventoDetalhe(item)}
             >
               <View style={styles.cardHeaderRow}>
                 <View style={styles.timeAndBadgeRow}>
-                  <Text style={[styles.itemHora, { color: palette.text, fontSize: fs(15) }]}>
-                    {item.hora}
-                  </Text>
-                  <View style={[styles.typeBadge, { backgroundColor: badgeColor }]}>
-                    <Text style={[styles.typeBadgeText, { fontSize: fs(11) }]}>
-                      {item.tipo}
-                    </Text>
+                  <DarkGlassIcon
+                    name={obterIconeTipo(item)}
+                    size={19}
+                    boxSize={38}
+                    borderRadius={11}
+                    accentColor={palette.primary}
+                    style={{ marginRight: 10 }}
+                  />
+                  <View>
+                    <View style={styles.badgesInline}>
+                      <View style={styles.timeGlassPill}>
+                        <Ionicons name="time-outline" size={12} color={palette.primary} />
+                        <Text style={[styles.itemHora, { color: palette.text, fontSize: fs(13) }]}>
+                          {item.hora}
+                        </Text>
+                      </View>
+                      <View style={[styles.typeBadge, { backgroundColor: badgeColor }]}>
+                        <Text style={[styles.typeBadgeText, { fontSize: fs(10) }]}>
+                          {item.tipo}
+                        </Text>
+                      </View>
+                      <Text style={[styles.itemDiaTag, { color: palette.primary, fontSize: fs(11) }]}>
+                        {item.dia}
+                      </Text>
+                    </View>
                   </View>
-                  <Text style={[styles.itemDiaTag, { color: palette.primary, fontSize: fs(11) }]}>
-                    {item.dia}
-                  </Text>
                 </View>
 
                 <TouchableOpacity
@@ -173,10 +232,13 @@ export default function ProgramacaoScreen({ route }) {
                   hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                   accessibilityLabel={isFav ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
                 >
-                  <Ionicons
-                    name={isFav ? 'star' : 'star-outline'}
-                    size={22}
-                    color={isFav ? palette.accentGold : palette.textSecondary}
+                  <DarkGlassIcon
+                    name={isFav ? 'bookmark' : 'bookmark-outline'}
+                    size={17}
+                    boxSize={34}
+                    borderRadius={10}
+                    accentColor={isFav ? palette.accentGold : palette.textSecondary}
+                    borderColor={isFav ? 'rgba(234, 179, 8, 0.45)' : 'rgba(148, 163, 184, 0.24)'}
                   />
                 </TouchableOpacity>
               </View>
@@ -184,20 +246,29 @@ export default function ProgramacaoScreen({ route }) {
               <Text style={[styles.itemTitulo, { color: palette.text, fontSize: fs(16) }]}>
                 {item.titulo}
               </Text>
-              <Text style={[styles.itemPalestrante, { color: palette.textSecondary, fontSize: fs(13) }]}>
-                {item.palestrante}
-              </Text>
+              <View style={styles.speakerRow}>
+                <Ionicons name="person-outline" size={13} color={palette.primary} />
+                <Text style={[styles.itemPalestrante, { color: palette.textSecondary, fontSize: fs(13) }]}>
+                  {item.palestrante}
+                </Text>
+              </View>
 
               <View style={styles.itemFooterRow}>
-                <View style={styles.localWrap}>
-                  <Ionicons name="location-outline" size={15} color={palette.primary} />
-                  <Text style={[styles.itemLocal, { color: palette.textSecondary, fontSize: fs(12) }]}>
-                    {item.local}
-                  </Text>
-                </View>
-                <Text style={[styles.verMaisLink, { color: palette.primary, fontSize: fs(12) }]}>
-                  Detalhes →
-                </Text>
+                <DarkGlassPill
+                  icon="location-outline"
+                  label={item.local}
+                  accentColor={palette.primary}
+                  textColor={palette.textSecondary}
+                  fontSize={fs(11)}
+                />
+                <DarkGlassPill
+                  label="Detalhes"
+                  rightIcon="chevron-forward-outline"
+                  accentColor={palette.primary}
+                  textColor={palette.primary}
+                  borderColor="rgba(0, 255, 204, 0.30)"
+                  fontSize={fs(11)}
+                />
               </View>
             </TouchableOpacity>
           );
@@ -213,15 +284,40 @@ export default function ProgramacaoScreen({ route }) {
       >
         <View style={styles.modalOverlay}>
           {eventoDetalhe ? (
-            <View style={[styles.modalContent, { backgroundColor: palette.surfaceElevated, borderColor: palette.border }]}>
+            <View
+              style={[
+                styles.modalContent,
+                {
+                  backgroundColor: palette.surfaceElevated,
+                  borderColor: palette.glassBorder || palette.border,
+                },
+              ]}
+            >
               <View style={styles.modalHeader}>
-                <View style={[styles.typeBadge, { backgroundColor: obterCorBadge(eventoDetalhe.tipo) }]}>
-                  <Text style={[styles.typeBadgeText, { fontSize: fs(11) }]}>
-                    {eventoDetalhe.tipo} • {eventoDetalhe.dia} às {eventoDetalhe.hora}
-                  </Text>
+                <View style={styles.modalHeaderLeft}>
+                  <DarkGlassIcon
+                    name={obterIconeTipo(eventoDetalhe)}
+                    size={20}
+                    boxSize={40}
+                    borderRadius={12}
+                    accentColor={palette.primary}
+                    style={{ marginRight: 10 }}
+                  />
+                  <View style={[styles.typeBadge, { backgroundColor: obterCorBadge(eventoDetalhe.tipo) }]}>
+                    <Text style={[styles.typeBadgeText, { fontSize: fs(11) }]}>
+                      {eventoDetalhe.tipo} • {eventoDetalhe.dia} às {eventoDetalhe.hora}
+                    </Text>
+                  </View>
                 </View>
                 <TouchableOpacity onPress={() => setEventoDetalhe(null)}>
-                  <Ionicons name="close-circle" size={28} color={palette.textSecondary} />
+                  <DarkGlassIcon
+                    name="close-outline"
+                    size={20}
+                    boxSize={34}
+                    borderRadius={10}
+                    accentColor={palette.textSecondary}
+                    borderColor="rgba(148, 163, 184, 0.28)"
+                  />
                 </TouchableOpacity>
               </View>
 
@@ -234,21 +330,33 @@ export default function ProgramacaoScreen({ route }) {
 
               <View style={[styles.modalInfoBox, { backgroundColor: palette.surface, borderColor: palette.border }]}>
                 <View style={styles.modalInfoRow}>
-                  <Ionicons name="location" size={16} color={palette.primary} />
+                  <DarkGlassIcon
+                    name="location-outline"
+                    size={15}
+                    boxSize={28}
+                    borderRadius={8}
+                    accentColor={palette.primary}
+                  />
                   <Text style={[styles.modalInfoText, { color: palette.text, fontSize: fs(13) }]}>
                     Local: {eventoDetalhe.local}
                   </Text>
                 </View>
-                <View style={[styles.modalInfoRow, { marginTop: 6 }]}>
-                  <Ionicons name="time" size={16} color={palette.primary} />
+                <View style={[styles.modalInfoRow, { marginTop: 8 }]}>
+                  <DarkGlassIcon
+                    name="time-outline"
+                    size={15}
+                    boxSize={28}
+                    borderRadius={8}
+                    accentColor={palette.primary}
+                  />
                   <Text style={[styles.modalInfoText, { color: palette.text, fontSize: fs(13) }]}>
                     Data e Horário: {eventoDetalhe.dia}/2025 às {eventoDetalhe.hora}
                   </Text>
                 </View>
               </View>
 
-              <Text style={[styles.modalDescLabel, { color: palette.textSecondary, fontSize: fs(12) }]}>
-                RESUMO DA ATIVIDADE
+              <Text style={[styles.modalDescLabel, { color: palette.textSecondary, fontSize: fs(11) }]}>
+                RESUMO TÉCNICO DA ATIVIDADE
               </Text>
               <Text style={[styles.modalDescription, { color: palette.text, fontSize: fs(14) }]}>
                 {eventoDetalhe.descricao}
@@ -267,22 +375,22 @@ export default function ProgramacaoScreen({ route }) {
                 onPress={() => toggleFavorito(eventoDetalhe.id)}
               >
                 <Ionicons
-                  name={favoritos.includes(eventoDetalhe.id) ? 'star' : 'star-outline'}
+                  name={favoritos.includes(eventoDetalhe.id) ? 'bookmark' : 'bookmark-outline'}
                   size={18}
-                  color={favoritos.includes(eventoDetalhe.id) ? palette.accentGold : '#0d1b2a'}
+                  color={favoritos.includes(eventoDetalhe.id) ? palette.accentGold : '#06101a'}
                 />
                 <Text
                   style={[
                     styles.favActionBtnText,
                     {
-                      color: favoritos.includes(eventoDetalhe.id) ? palette.text : '#0d1b2a',
+                      color: favoritos.includes(eventoDetalhe.id) ? palette.text : '#06101a',
                       fontSize: fs(14),
                     },
                   ]}
                 >
                   {favoritos.includes(eventoDetalhe.id)
                     ? 'Salvo na sua Agenda (Toque para remover)'
-                    : 'Salvar nos Meus Favoritos'}
+                    : 'Salvar na Minha Agenda Offline'}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -308,9 +416,10 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
   },
   tabButton: {
-    paddingVertical: 9,
-    paddingHorizontal: 16,
-    borderRadius: 20,
+    flexDirection: 'row',
+    paddingVertical: 8,
+    paddingHorizontal: 13,
+    borderRadius: 14,
     marginRight: 8,
     borderWidth: 1,
     alignItems: 'center',
@@ -318,6 +427,9 @@ const styles = StyleSheet.create({
   },
   tabText: {
     fontWeight: '800',
+  },
+  tabSubText: {
+    fontWeight: '600',
   },
   secondaryFilterRow: {
     flexDirection: 'row',
@@ -329,8 +441,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 16,
+    paddingVertical: 7,
+    borderRadius: 12,
     borderWidth: 1,
   },
   favFilterText: {
@@ -338,20 +450,23 @@ const styles = StyleSheet.create({
     marginLeft: 6,
   },
   catClearPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 14,
+    paddingVertical: 6,
+    borderRadius: 12,
   },
   catClearText: {
     color: '#ffffff',
     fontWeight: '800',
+    marginHorizontal: 5,
   },
   listContent: {
     paddingBottom: 28,
   },
   itemCard: {
     padding: 16,
-    borderRadius: 12,
+    borderRadius: 16,
     marginBottom: 12,
     borderWidth: 1,
   },
@@ -359,21 +474,35 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 8,
+    marginBottom: 10,
   },
   timeAndBadgeRow: {
     flexDirection: 'row',
     alignItems: 'center',
+    flex: 1,
+  },
+  badgesInline: {
+    flexDirection: 'row',
+    alignItems: 'center',
     flexWrap: 'wrap',
+  },
+  timeGlassPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 255, 204, 0.10)',
+    borderRadius: 8,
+    paddingHorizontal: 7,
+    paddingVertical: 3,
+    marginRight: 8,
   },
   itemHora: {
     fontWeight: '800',
-    marginRight: 10,
+    marginLeft: 4,
   },
   typeBadge: {
-    paddingHorizontal: 10,
-    paddingVertical: 3,
-    borderRadius: 12,
+    paddingHorizontal: 9,
+    paddingVertical: 4,
+    borderRadius: 9,
     marginRight: 8,
   },
   typeBadgeText: {
@@ -381,15 +510,20 @@ const styles = StyleSheet.create({
     fontWeight: '800',
   },
   itemDiaTag: {
-    fontWeight: '700',
+    fontWeight: '800',
   },
   itemTitulo: {
     fontWeight: '800',
     lineHeight: 22,
   },
+  speakerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 6,
+  },
   itemPalestrante: {
-    marginTop: 4,
-    fontWeight: '500',
+    marginLeft: 6,
+    fontWeight: '600',
   },
   itemFooterRow: {
     flexDirection: 'row',
@@ -400,20 +534,9 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: 'rgba(148, 163, 184, 0.14)',
   },
-  localWrap: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  itemLocal: {
-    marginLeft: 5,
-    fontWeight: '600',
-  },
-  verMaisLink: {
-    fontWeight: '700',
-  },
   emptyBox: {
     padding: 28,
-    borderRadius: 12,
+    borderRadius: 16,
     borderWidth: 1,
     alignItems: 'center',
     marginTop: 20,
@@ -424,12 +547,12 @@ const styles = StyleSheet.create({
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.72)',
+    backgroundColor: 'rgba(4, 10, 18, 0.78)',
     justifyContent: 'center',
     padding: 20,
   },
   modalContent: {
-    borderRadius: 16,
+    borderRadius: 18,
     padding: 20,
     borderWidth: 1,
   },
@@ -437,7 +560,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 12,
+    marginBottom: 14,
+  },
+  modalHeaderLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
   },
   modalTitle: {
     fontWeight: '800',
@@ -450,7 +578,7 @@ const styles = StyleSheet.create({
   },
   modalInfoBox: {
     padding: 12,
-    borderRadius: 10,
+    borderRadius: 14,
     borderWidth: 1,
     marginBottom: 14,
   },
@@ -459,7 +587,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalInfoText: {
-    marginLeft: 8,
+    marginLeft: 10,
     fontWeight: '600',
   },
   modalDescLabel: {
@@ -475,9 +603,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 12,
+    paddingVertical: 13,
     paddingHorizontal: 16,
-    borderRadius: 10,
+    borderRadius: 12,
     borderWidth: 1,
   },
   favActionBtnText: {
@@ -485,4 +613,3 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
 });
-
