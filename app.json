@@ -1,0 +1,39 @@
+{
+  "expo": {
+    "name": "Semana de Engenharia Civil - IFPI",
+    "slug": "semana-eng-civil-ifpi",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/logo-app.png",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "image": "./assets/logo-curso-ifpi.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0d1b2a"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/logo-curso-ifpi.png",
+        "backgroundColor": "#0d1b2a"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro",
+      "pwa": {
+        "manifest": {
+          "name": "Semana de Engenharia Civil IFPI Floriano",
+          "short_name": "Semana EngCivil",
+          "description": "Aplicativo oficial do evento.",
+          "background_color": "#0d1b2a",
+          "theme_color": "#003366",
+          "display": "standalone"
+        }
+      }
+    }
+  }
+}
+
